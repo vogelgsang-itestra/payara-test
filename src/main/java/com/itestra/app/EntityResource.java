@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -27,13 +29,26 @@ public class EntityResource {
                 .build();
     }
 
-    @GET
-    @Path("/test")
-    public Response test() {
-        final EntityBE entity = new EntityBE("Entity");
-        entity.addAssignment(new AssignmentBE("Assignment"));
+    @POST
+    @Path("/create")
+    public Response create(final CreateRequest createRequest) {
+        final EntityBE entity = new EntityBE(createRequest.getValue());
+        createRequest.getAssignments().forEach(a -> entity.addAssignment(new AssignmentBE(a)));
         entityBF.insert(entity);
 
         return Response.ok(new EntityDO(entity)).build();
+    }
+
+    static class CreateRequest {
+        private final List<String> assignments = new ArrayList<>();
+        private String value;
+
+        public String getValue() {
+            return value;
+        }
+
+        public List<String> getAssignments() {
+            return assignments;
+        }
     }
 }
