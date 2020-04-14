@@ -17,8 +17,7 @@ public class EntityBE extends AbstractBE {
     @Column(name = "value")
     private String value;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "entity_id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "entity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AssignmentBE> assignments = new ArrayList<>();
 
     public EntityBE() {
@@ -43,9 +42,11 @@ public class EntityBE extends AbstractBE {
     public void setAssignments(List<AssignmentBE> assignments) {
         this.assignments.clear();
         this.assignments.addAll(assignments);
+        assignments.forEach(a -> a.setEntity(this));
     }
 
     public void addAssignment(AssignmentBE assignment) {
         this.assignments.add(assignment);
+        assignment.setEntity(this);
     }
 }

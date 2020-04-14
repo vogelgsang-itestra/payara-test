@@ -14,6 +14,10 @@ public class AssignmentBE extends AbstractBE {
     @JoinColumn(name = "child_entity_id")
     private ChildEntityBE childEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "entity_id")
+    private EntityBE entity;
+
     public AssignmentBE() {
     }
 
@@ -27,5 +31,14 @@ public class AssignmentBE extends AbstractBE {
 
     public void setChildEntity(ChildEntityBE childEntity) {
         this.childEntity = childEntity;
+    }
+
+    public EntityBE getEntity() {
+        return entity;
+    }
+
+    public void setEntity(EntityBE entity) {
+        this.entity = entity;
+        // for this test it is ok to establish the connection only in EntityBE
     }
 }
