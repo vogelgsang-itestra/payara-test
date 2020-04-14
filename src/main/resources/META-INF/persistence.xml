@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="payara_test"
+                      transaction-type="JTA">
+        <jta-data-source>jdbc/db.payara_test</jta-data-source>
+
+        <!-- all mapping files form business components referenced (direct and transitive dependencies) by this war -->
+        <mapping-file>META-INF/core-entity-mappings.xml</mapping-file>
+
+        <class>com.itestra.app.jpa.LocalDateTimeConverter</class>
+
+        <!-- shared caching must be disabled, when working with more than one persistence unit in a
+        non-cluster environment (see e.g. http://wiki.eclipse.org/EclipseLink/Examples/JPA/Caching) -->
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.target-database" value="PostgreSQL"/>
+            <!-- for configuring logging see: https://wiki.eclipse.org/EclipseLink/Examples/JPA/Logging -->
+            <property name="eclipselink.logging.logger" value="ServerLogger"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+
