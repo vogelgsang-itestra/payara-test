@@ -4,5 +4,8 @@
 <glassfish-web-app>
     <context-root>/</context-root>
     <parameter-encoding default-charset="UTF-8"/>
+    <!-- force usage of libraries from the war,
+    see: https://docs.payara.fish/documentation/payara-server/classloading.html -->
+    <class-loader delegate="false"/>
 </glassfish-web-app>
 

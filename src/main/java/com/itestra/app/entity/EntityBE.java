@@ -18,7 +18,7 @@ public class EntityBE extends AbstractBE {
     private String value;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "entity_id")
+    @JoinColumn(name = "entity_id", nullable = false)
     private List<AssignmentBE> assignments = new ArrayList<>();
 
     public EntityBE() {
