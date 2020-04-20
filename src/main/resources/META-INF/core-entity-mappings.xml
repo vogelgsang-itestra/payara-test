@@ -8,6 +8,8 @@
         version="2.0">
     <entity class="com.itestra.app.entity.AssignmentBE"/>
     <entity class="com.itestra.app.entity.AssignmentHistoryBE"/>
+    <entity class="com.itestra.app.entity.ChildEntityBE"/>
+    <entity class="com.itestra.app.entity.ChildEntityHistoryBE"/>
     <entity class="com.itestra.app.entity.EntityBE"/>
     <entity class="com.itestra.app.entity.EntityHistoryBE"/>
 </entity-mappings>

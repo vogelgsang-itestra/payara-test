@@ -2,6 +2,7 @@ package com.itestra.app;
 
 import com.itestra.app.dataobject.EntityDO;
 import com.itestra.app.entity.AssignmentBE;
+import com.itestra.app.entity.ChildEntityBE;
 import com.itestra.app.entity.EntityBE;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -20,6 +21,9 @@ public class EntityResource {
     @Inject
     private EntityBF entityBF;
 
+    @Inject
+    private ChildEntityBF childEntityBF;
+
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") final Long id) {
@@ -33,7 +37,12 @@ public class EntityResource {
     @Path("/create")
     public Response create(final CreateRequest createRequest) {
         final EntityBE entity = new EntityBE(createRequest.getValue());
-        createRequest.getAssignments().forEach(a -> entity.addAssignment(new AssignmentBE(a)));
+        createRequest.getAssignments().forEach(a -> {
+            final ChildEntityBE childEntity = new ChildEntityBE(a);
+            childEntityBF.insert(childEntity);
+            final AssignmentBE assignment = new AssignmentBE(childEntity);
+            entity.addAssignment(assignment);
+        });
         entityBF.insert(entity);
 
         return Response.ok(new EntityDO(entity)).build();

@@ -6,7 +6,7 @@
 # parameters
 
 # should be the same as in setup.sh
-BASE_PORT=61210
+BASE_PORT=61010
 
 ################################
 

@@ -8,7 +8,7 @@
 # parameters
 
 PAYARA_HOME=../payara
-BASE_PORT=61210
+BASE_PORT=61010
 # DOMAIN must not contain -
 DOMAIN=payara_test
 

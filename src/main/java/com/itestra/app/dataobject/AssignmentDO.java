@@ -4,22 +4,22 @@ import com.itestra.app.entity.AssignmentBE;
 
 public class AssignmentDO {
     private final Long id;
-    private final String value;
+    private ChildEntityDO childEntity;
 
-    public AssignmentDO(Long id, String value) {
+    public AssignmentDO(Long id, ChildEntityDO childEntity) {
         this.id = id;
-        this.value = value;
+        this.childEntity = childEntity;
     }
 
     public AssignmentDO(AssignmentBE assignment) {
-        this(assignment.getId(), assignment.getValue());
+        this(assignment.getId(), new ChildEntityDO(assignment.getChildEntity()));
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getValue() {
-        return value;
+    public ChildEntityDO getChildEntity() {
+        return childEntity;
     }
 }
