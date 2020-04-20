@@ -19,4 +19,8 @@ curl localhost:${HTTP_PORT}/entity/create \
   -H "content-type: application/json; charset=utf-8" \
   -d '{"value": "Entity", "assignments": ["ASGMT_1", "ASGMT_2"]}'
 
+echo "should be empty"
 psql -U postgres -p $POSTGRES_PORT -c "SELECT * FROM assignment_history where entity_id is null"
+
+echo "should be empty"
+psql -U postgres -p $POSTGRES_PORT -c "SELECT * FROM assignment_history where child_entity_id is null"
