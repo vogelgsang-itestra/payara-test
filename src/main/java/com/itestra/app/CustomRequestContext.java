@@ -6,9 +6,13 @@ import java.time.LocalDateTime;
 
 @RequestScoped
 public class CustomRequestContext {
-    private final LocalDateTime currentTimestamp = LocalDateTime.now(Clock.systemUTC());
+    private LocalDateTime currentTimestamp = LocalDateTime.now(Clock.systemUTC());
 
     public LocalDateTime getCurrentTimestamp() {
         return currentTimestamp;
+    }
+
+    public void setCurrentTimestamp(LocalDateTime currentTimestamp) {
+        this.currentTimestamp = currentTimestamp;
     }
 }

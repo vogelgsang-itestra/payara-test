@@ -3,9 +3,7 @@ package com.itestra.app.entity;
 import com.itestra.app.HistoryCustomizer;
 import org.eclipse.persistence.annotations.Customizer;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "child_entity")
