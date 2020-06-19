@@ -12,6 +12,9 @@ import static java.util.Collections.unmodifiableList;
 @Entity
 @Table(name = "entity")
 @Customizer(HistoryCustomizer.class)
+@NamedQueries(
+        @NamedQuery(name = "entity.getById", query = "select e from EntityBE e where e.id = :id")
+)
 public class EntityBE extends AbstractBE {
 
     @Column(name = "value")
