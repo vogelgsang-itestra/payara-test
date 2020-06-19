@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
@@ -40,8 +41,9 @@ public class TestResource {
 
     @POST
     @Path("/init")
-    public void init()  {
-        customRequestContext.setCurrentTimestamp(LocalDateTime.of(2020, Month.JUNE, 18, 10, 0));
+    public void init() {
+        LocalDateTime start = LocalDateTime.of(2020, Month.JUNE, 18, 10, 0);
+        customRequestContext.setCurrentTimestamp(start);
 
         EntityBE parent = new EntityBE("parent");
         entityBF.insert(parent);
@@ -50,14 +52,31 @@ public class TestResource {
         ChildEntityBE secondChild = new ChildEntityBE("second child");
         childEntityBF.insert(secondChild);
 
-        customRequestContext.setCurrentTimestamp(LocalDateTime.of(2020, Month.JUNE, 19, 10, 0));
+        customRequestContext.setCurrentTimestamp(start.plusDays(1));
 
         parent.addAssignment(new AssignmentBE(firstChild));
         parent = entityBF.update(parent);
 
-        customRequestContext.setCurrentTimestamp(LocalDateTime.of(2020, Month.JUNE, 20, 10, 0));
+        customRequestContext.setCurrentTimestamp(start.plusDays(2));
 
         parent.setAssignments(asList(new AssignmentBE(secondChild)));
         parent = entityBF.update(parent);
+
+        Optional<EntityBE> history = entityBF.getHistoryById(1, start);
+        assertThatEqual(history.get().getAssignments().size(), 0);
+
+        history = entityBF.getHistoryById(1, start.plusDays(1));
+        assertThatEqual(history.get().getAssignments().size(), 1);
+        assertThatEqual(history.get().getAssignments().get(0).getChildEntity().getValue(), "first child");
+
+        history = entityBF.getHistoryById(1, start.plusDays(2));
+        assertThatEqual(history.get().getAssignments().size(), 1);
+        assertThatEqual(history.get().getAssignments().get(0).getChildEntity().getValue(), "second child");
+    }
+
+    private <T> void assertThatEqual(T actual, T expected) {
+        if (!actual.equals(expected)) {
+            throw new AssertionError(String.format("expected %s but got %s", expected, actual));
+        }
     }
 }
