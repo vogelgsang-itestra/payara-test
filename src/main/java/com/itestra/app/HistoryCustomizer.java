@@ -15,6 +15,9 @@ public class HistoryCustomizer implements DescriptorCustomizer {
         policy.addStartFieldName("valid_from");
         policy.addEndFieldName("valid_to");
 
+        // uncomment to disable writing to history
+        // policy.setShouldHandleWrites(false);
+
         policy.getMapping();
 
         descriptor.setHistoryPolicy(policy);
