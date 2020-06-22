@@ -7,13 +7,8 @@
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
     <entity class="com.itestra.app.entity.ChildAssignmentBE"/>
-    <entity class="com.itestra.app.entity.ChildAssignmentHistoryBE"/>
     <entity class="com.itestra.app.entity.ChildEntityBE"/>
-    <entity class="com.itestra.app.entity.ChildEntityHistoryBE"/>
     <entity class="com.itestra.app.entity.EntityBE"/>
-    <entity class="com.itestra.app.entity.EntityHistoryBE"/>
     <entity class="com.itestra.app.entity.GrandChildEntityBE"/>
-    <entity class="com.itestra.app.entity.GrandChildEntityHistoryBE"/>
     <entity class="com.itestra.app.entity.GrandChildAssignmentBE"/>
-    <entity class="com.itestra.app.entity.GrandChildAssignmentHistoryBE"/>
 </entity-mappings>

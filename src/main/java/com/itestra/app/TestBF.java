@@ -12,11 +12,15 @@ public class TestBF {
     private EntityManager entityManager;
 
     public void resetDb() {
-        entityManager.createQuery("delete from ChildAssignmentHistoryBE").executeUpdate();
-        entityManager.createQuery("delete from ChildEntityHistoryBE ").executeUpdate();
-        entityManager.createQuery("delete from EntityHistoryBE ").executeUpdate();
+        entityManager.createNativeQuery("delete from grand_child_assignment_history");
+        entityManager.createNativeQuery("delete from child_assignment_history");
+        entityManager.createNativeQuery("delete from grand_child_entity_history");
+        entityManager.createNativeQuery("delete from child_entity_history");
+        entityManager.createNativeQuery("delete from entity_history");
 
+        entityManager.createQuery("delete from GrandChildAssignmentBE").executeUpdate();
         entityManager.createQuery("delete from ChildAssignmentBE").executeUpdate();
+        entityManager.createQuery("delete from GrandChildEntityBE ").executeUpdate();
         entityManager.createQuery("delete from ChildEntityBE ").executeUpdate();
         entityManager.createQuery("delete from EntityBE ").executeUpdate();
     }
