@@ -1,8 +1,6 @@
 package com.itestra.app;
 
-import com.itestra.app.entity.AssignmentBE;
-import com.itestra.app.entity.ChildEntityBE;
-import com.itestra.app.entity.EntityBE;
+import com.itestra.app.entity.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,6 +27,9 @@ public class TestResource {
     private ChildEntityBF childEntityBF;
 
     @Inject
+    private GrandChildEntityBF grandChildEntityBF;
+
+    @Inject
     private TestBF testBF;
     @Inject
     private CustomRequestContext customRequestContext;
@@ -43,6 +44,8 @@ public class TestResource {
     @Path("/init")
     public void init() {
         LocalDateTime start = LocalDateTime.of(2020, Month.JUNE, 18, 10, 0);
+
+        // first init entities
         customRequestContext.setCurrentTimestamp(start);
 
         EntityBE parent = new EntityBE("parent");
@@ -51,16 +54,24 @@ public class TestResource {
         childEntityBF.insert(firstChild);
         ChildEntityBE secondChild = new ChildEntityBE("second child");
         childEntityBF.insert(secondChild);
+        GrandChildEntityBE firstGrandChild = new GrandChildEntityBE("first grand child");
+        grandChildEntityBF.insert(firstGrandChild);
 
+        // add add assignment
         customRequestContext.setCurrentTimestamp(start.plusDays(1));
 
-        parent.addAssignment(new AssignmentBE(firstChild));
+        final ChildAssignmentBE childAssignment = new ChildAssignmentBE(firstChild);
+        childAssignment.setGrandChildAssignments(asList(new GrandChildAssignmentBE(firstGrandChild)));
+        parent.addAssignment(childAssignment);
         parent = entityBF.update(parent);
 
+        // remove assignment add other
         customRequestContext.setCurrentTimestamp(start.plusDays(2));
 
-        parent.setAssignments(asList(new AssignmentBE(secondChild)));
+        parent.setAssignments(asList(new ChildAssignmentBE(secondChild)));
         parent = entityBF.update(parent);
+
+        // test history
 
         Optional<EntityBE> history = entityBF.getHistoryById(1, start);
         assertThatEqual(history.get().getAssignments().size(), 0);

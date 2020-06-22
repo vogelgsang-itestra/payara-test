@@ -21,7 +21,7 @@ public class EntityBE extends AbstractBE {
     private String value;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "entity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AssignmentBE> assignments = new ArrayList<>();
+    private List<ChildAssignmentBE> assignments = new ArrayList<>();
 
     public EntityBE() {
     }
@@ -38,17 +38,17 @@ public class EntityBE extends AbstractBE {
         this.value = value;
     }
 
-    public List<AssignmentBE> getAssignments() {
+    public List<ChildAssignmentBE> getAssignments() {
         return unmodifiableList(assignments);
     }
 
-    public void setAssignments(List<AssignmentBE> assignments) {
+    public void setAssignments(List<ChildAssignmentBE> assignments) {
         this.assignments.clear();
         this.assignments.addAll(assignments);
         assignments.forEach(a -> a.setEntity(this));
     }
 
-    public void addAssignment(AssignmentBE assignment) {
+    public void addAssignment(ChildAssignmentBE assignment) {
         this.assignments.add(assignment);
         assignment.setEntity(this);
     }

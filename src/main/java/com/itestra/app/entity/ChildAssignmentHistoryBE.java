@@ -3,8 +3,8 @@ package com.itestra.app.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "assignment_history")
-public class AssignmentHistoryBE extends AbstractHistoryBE {
+@Table(name = "child_assignment_history")
+public class ChildAssignmentHistoryBE extends AbstractHistoryBE {
 
     @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "child_entity_id")

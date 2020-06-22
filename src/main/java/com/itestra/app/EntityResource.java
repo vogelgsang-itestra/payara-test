@@ -1,7 +1,7 @@
 package com.itestra.app;
 
 import com.itestra.app.dataobject.EntityDO;
-import com.itestra.app.entity.AssignmentBE;
+import com.itestra.app.entity.ChildAssignmentBE;
 import com.itestra.app.entity.ChildEntityBE;
 import com.itestra.app.entity.EntityBE;
 
@@ -40,7 +40,7 @@ public class EntityResource {
         createRequest.getAssignments().forEach(a -> {
             final ChildEntityBE childEntity = new ChildEntityBE(a);
             childEntityBF.insert(childEntity);
-            final AssignmentBE assignment = new AssignmentBE(childEntity);
+            final ChildAssignmentBE assignment = new ChildAssignmentBE(childEntity);
             entity.addAssignment(assignment);
         });
         entityBF.insert(entity);

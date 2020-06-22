@@ -1,6 +1,6 @@
 package com.itestra.app.dataobject;
 
-import com.itestra.app.entity.AssignmentBE;
+import com.itestra.app.entity.ChildAssignmentBE;
 
 public class AssignmentDO {
     private final Long id;
@@ -11,7 +11,7 @@ public class AssignmentDO {
         this.childEntity = childEntity;
     }
 
-    public AssignmentDO(AssignmentBE assignment) {
+    public AssignmentDO(ChildAssignmentBE assignment) {
         this(assignment.getId(), new ChildEntityDO(assignment.getChildEntity()));
     }
 
