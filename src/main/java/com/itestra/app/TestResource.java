@@ -73,19 +73,22 @@ public class TestResource {
 
         // test history
 
-        Optional<EntityBE> history = entityBF.getHistoryById(1, start);
+        Optional<EntityBE> history = entityBF.getHistoryById(parent.getId(), start);
         assertThatEqual(history.get().getAssignments().size(), 0);
 
-        history = entityBF.getHistoryById(1, start.plusDays(1));
+        history = entityBF.getHistoryById(parent.getId(), start.plusDays(1));
         assertThatEqual(history.get().getAssignments().size(), 1);
         assertThatEqual(history.get().getAssignments().get(0).getChildEntity().getValue(), "first child");
+        assertThatEqual(history.get().getAssignments().get(0).getGrandChildAssignments().size(), 1);
+        assertThatEqual(history.get().getAssignments().get(0).getGrandChildAssignments().get(0).getGrandChildEntity().getValue(), "first grand child");
 
-        history = entityBF.getHistoryById(1, start.plusDays(2));
+        history = entityBF.getHistoryById(parent.getId(), start.plusDays(2));
         assertThatEqual(history.get().getAssignments().size(), 1);
         assertThatEqual(history.get().getAssignments().get(0).getChildEntity().getValue(), "second child");
+        assertThatEqual(history.get().getAssignments().get(0).getGrandChildAssignments().size(), 0);
     }
 
-    private <T> void assertThatEqual(T actual, T expected) {
+    private static <T> void assertThatEqual(T actual, T expected) {
         if (!actual.equals(expected)) {
             throw new AssertionError(String.format("expected %s but got %s", expected, actual));
         }
