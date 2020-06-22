@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
@@ -34,15 +35,25 @@ public class TestResource {
     @Inject
     private CustomRequestContext customRequestContext;
 
-    @POST
-    @Path("/reset")
-    public void reset() {
-        testBF.resetDb();
+    private static <T> void assertThatEqual(T actual, T expected) {
+        if (!actual.equals(expected)) {
+            throw new AssertionError(String.format("expected %s but got %s", expected, actual));
+        }
     }
 
     @POST
-    @Path("/init")
-    public void init() {
+    @Path("/test")
+    public void test() {
+        reset();
+        Long parentId = init();
+        history(parentId);
+    }
+
+    private void reset() {
+        testBF.resetDb();
+    }
+
+    private Long init() {
         LocalDateTime start = LocalDateTime.of(2020, Month.JUNE, 18, 10, 0);
 
         // first init entities
@@ -71,26 +82,26 @@ public class TestResource {
         parent.setAssignments(asList(new ChildAssignmentBE(secondChild)));
         parent = entityBF.update(parent);
 
-        // test history
+        return parent.getId();
+    }
 
-        Optional<EntityBE> history = entityBF.getHistoryById(parent.getId(), start);
+    private void history(Long parentId) {
+        final List<LocalDateTime> versions = entityBF.getVersions(parentId);
+        assertThatEqual(versions.size(), 3);
+
+        Optional<EntityBE> history = entityBF.getHistoryById(parentId, versions.get(0));
         assertThatEqual(history.get().getAssignments().size(), 0);
 
-        history = entityBF.getHistoryById(parent.getId(), start.plusDays(1));
+        history = entityBF.getHistoryById(parentId, versions.get(1));
         assertThatEqual(history.get().getAssignments().size(), 1);
         assertThatEqual(history.get().getAssignments().get(0).getChildEntity().getValue(), "first child");
         assertThatEqual(history.get().getAssignments().get(0).getGrandChildAssignments().size(), 1);
         assertThatEqual(history.get().getAssignments().get(0).getGrandChildAssignments().get(0).getGrandChildEntity().getValue(), "first grand child");
 
-        history = entityBF.getHistoryById(parent.getId(), start.plusDays(2));
+        history = entityBF.getHistoryById(parentId, versions.get(2));
         assertThatEqual(history.get().getAssignments().size(), 1);
         assertThatEqual(history.get().getAssignments().get(0).getChildEntity().getValue(), "second child");
         assertThatEqual(history.get().getAssignments().get(0).getGrandChildAssignments().size(), 0);
     }
 
-    private static <T> void assertThatEqual(T actual, T expected) {
-        if (!actual.equals(expected)) {
-            throw new AssertionError(String.format("expected %s but got %s", expected, actual));
-        }
-    }
 }
